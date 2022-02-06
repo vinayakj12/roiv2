@@ -1,11 +1,38 @@
 import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList, IonItemDivider } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonLabel, IonList, IonItemDivider, IonButton } from '@ionic/react';
+
+
 
 const Tab1: React.FC = () => {
 
   const [text, setText] = useState<string>();
   const [text2, setText2] = useState<string>();
   const [number, setNumber] = useState<number>();
+
+
+  const api_url = "https://farmprojectouthouse1.herokuapp.com/user"
+
+    const postData = () => {
+    var Crop_name = text;
+    var Investment = text2;
+    var duration = number;
+    const data = { Crop_name: Crop_name, Investment: Investment, duration: duration  };
+    fetch(api_url, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            
+        })
+}
+
+
 
   return (
     <IonPage>
@@ -18,7 +45,8 @@ const Tab1: React.FC = () => {
         <IonList>
           <IonItemDivider>Enter Crop Name</IonItemDivider>
           <IonItem>
-            <IonInput value={text} placeholder="Enter Input" autofocus onIonChange={e => setText(e.detail.value!)}></IonInput>
+          
+            <IonInput value={text} name='username'  placeholder="Enter Input" autofocus onIonChange={e => setText(e.detail.value!)}></IonInput>
           </IonItem>
 
           <IonItemDivider>Enter Investment</IonItemDivider>
@@ -30,6 +58,11 @@ const Tab1: React.FC = () => {
           <IonItem>
             <IonInput type="number" value={number} placeholder="Enter Number" onIonChange={e => setNumber(parseInt(e.detail.value!, 10))}></IonInput>
           </IonItem>
+
+<IonItem><IonButton onClick={postData} color="primary">Submit</IonButton></IonItem>
+          
+          {/* <IonItem><button ion-button (click) = "showAlert()" icon-start large round color="dark">clike me m8</button></IonItem> */}
+          
 
           {/* <IonItemDivider>Disabled input</IonItemDivider>
           <IonItem>
